@@ -5,14 +5,45 @@
 
 Es importante contar con la herramienta de **poetry** para poder ejecutar los ejercicios de esta guía, antes de continuar revisa la [documentación](https://python-poetry.org/docs/#installation) para hacer la instalación de la herramienta.
 
-En esencia se utiliza 
 
 ```bash
 pipx install poetry
 ```
 
-## Guía del demo
+## Paquetes y módulos
 
+Cada archivo `py` puede ser considerado como un módulo de Python. Un módulo de python puede ser ejecutado directamente desde la misma carpeta de ejecución, para ello es necesario cambiar el directorio de trabajo al directorio que contiene el módulo.
+
+```bash
+cd /path/to/module
+python modulo.py
+```
+
+Los módulos pueden agruparse en paquetes, y estos también en paquetes más generales, generando estructuras jerárquicas como esta:
+
+```
+proyecto/
+├── paquete_1/                      
+│   ├── modulo_1.py
+│   ├── subpaquete_1/
+│   │   ├── modulo_2.py
+│   │   └── modulo_3.py
+│   └── subpaquete_2/
+│       └── modulo_4.py
+├── paquete_2/                      
+│   ├── modulo_5.py
+│   ├── subpaquete_3/
+│   │   └── modulo_6.py
+│   └── subpaquete_2/
+│       ├── modulo_7.py
+│       └── modulo_8.py
+└── modulo_9.py
+```
+
+
+## Poetry
+
+### Creación de un proyecto nuevo
 
 1. Muévete a la posición deseada
 ```bash
@@ -78,7 +109,30 @@ poetry build
 poetry publish
 ```
 
-## Otras herramientas
+### Usar un paquete preestablecido
+
+1. Moverse a la ruta del paquete
+
+```bash
+cd /path/to/package
+```
+
+2. Inicializando el repo
+
+```bash
+poetry init
+```
+
+   - Sigue las instrucciones para la inicialización del paquete
+
+3. Instala las dependencias
+
+```bash
+poetry install
+```
+
+
+### Otras herramientas
 
 Con poetry se pueden exportar los archivos de dependencias a otros formatos (no suele ser recomendable, pero en algunos ambientes de desarrollo podría ser útil)
 
