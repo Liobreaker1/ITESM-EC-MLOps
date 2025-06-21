@@ -55,7 +55,7 @@ You should see something like `Python 3.10.x`. If it's not installed, make sure 
    python3.10 -m venv virtual_environment_name
    ```
 
-   Replace `nombre_del_entorno_virtual` with your preferred name for your virtual environment (e.g. `itesm_venv`).
+   Replace `virtual_environment_name` with your preferred name for your virtual environment (e.g. `itesm_venv`).
 
 2. **Activate the Virtual Environment:**
 
@@ -94,6 +94,21 @@ Once the virtual environment is active, you can install the necessary dependenci
 ```bash
 pip install -r requirements.txt
 ```
+
+If you want to make your virtual environment available as a kernel, you need to install `ipykernel` (already available in the requirements file), and then register your virtual environment with a name you choose
+
+```bash
+python -m ipykernel install --user --name virtual_environment_name --display-name "Python (virtual_environment_name)"
+```
+
+For example
+
+```bash
+python -m ipykernel install --user --name itesm_venv --display-name "Python_Itesm"
+```
+
+--name: Is the internal identifier, without spaces
+--display-name: The name you want to use to visualize your environment
 
 ## Additional Notes
 
