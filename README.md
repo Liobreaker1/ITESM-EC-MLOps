@@ -1,68 +1,88 @@
 # ITESM-MLOps-EC
 
-# Wine Quality Prediction (Pipeline Persistance).
+# Wine Quality Prediction (FastAPI inclusion).
 
-Esta rama agrega la funcionalidad de **guardar** el pipeline de scikit-learn entrenado en disco usando `joblib`. El pipeline ya estaba definido en ramas anteriores; aquí simplemente se hace persistente para poder ser reutilizado en despliegues futuros (por ejemplo, en la API de FastAPI).
+Esta rama agrega una API REST construida con **FastAPI** para consumir el modelo de clasificación entrenado, expuesto como un endpoint que recibe características fisicoquímicas del vino y devuelve su predicción de calidad.
+
+---
 
 ## Cambios principales respecto a la rama anterior
 
-- Se añadió el método `save_pipeline()` en la clase `WineQualityModel`
-- Se creó el directorio `models/` para almacenar el pipeline entrenado
-- Se agregó una línea al final de `main.py` para guardar el pipeline después de entrenar
+- Se crea un archivo `src/api/app.py` con la lógica de la API
+- Se utiliza el pipeline previamente entrenado y guardado (`wine_quality_pipeline.joblib`)
+- Se define un modelo de entrada `WineFeatures` con `pydantic` para validar los datos
+- Se incluye un endpoint `/predict` que devuelve la calidad estimada
 
 ---
 
-## ¿Por qué guardar el pipeline?
+## Cómo levantar la API
 
-Guardar el pipeline permite:
+Desde la raíz del proyecto, ejecuta:
 
-- Cargar el modelo entrenado desde un archivo `.joblib` sin necesidad de reentrenarlo
-- Separar el entrenamiento de la predicción
-- Usar el modelo en producción a través de una API.
+```bash
+uvicorn src.api.app:app --reload
+```
+
+Esto iniciará la API en:
+
+```
+http://127.0.0.1:8000
+```
+
+Puedes interactuar visualmente con la documentación automática de Swagger en:
+
+```
+http://127.0.0.1:8000/docs
+```
 
 ---
 
-## 📦 Estructura relevante
+## Ejemplo de input
+
+Puedes enviar un JSON como el siguiente:
+
+```json
+{
+  "fixed_acidity": 7.4,
+  "volatile_acidity": 0.7,
+  "citric_acid": 0.0,
+  "residual_sugar": 1.9,
+  "chlorides": 0.076,
+  "free_sulfur_dioxide": 11.0,
+  "total_sulfur_dioxide": 34.0,
+  "density": 0.9978,
+  "ph": 3.51,
+  "sulphates": 0.56,
+  "alcohol": 9.4
+}
+```
+---
+
+## Cómo hacer la petición
+
+### Usando Postman
+
+1. Método: `POST`
+2. URL: `http://127.0.0.1:8000/predict`
+3. Headers:
+   - `Content-Type: application/json`
+4. Body (raw - JSON): copiar el ejemplo anterior
+
+---
+
+## Archivos relevantes
 
 ```
 src/
-└── models/
-    └── wine_model.py            
-scripts/
-└── main.py                      
+└── api/
+    └── app.py                    # Código de la API FastAPI
 models/
-└── wine_quality_pipeline.joblib 
+└── wine_quality_pipeline.joblib  # Pipeline previamente entrenado
 ```
 
 ---
 
-## Pasos para ejecución
+## Pruebas sugeridas
 
-Desde la raíz del proyecto, con tu entorno virtual activado:
-
-```bash
-PYTHONPATH=src python scripts/main.py
-```
-
-Esto ejecutará todo el flujo:
-
-1. Carga del dataset
-2. Exploración inicial
-3. Entrenamiento del pipeline
-4. Evaluación del modelo
-5. Validación cruzada
-6. **Guardado del pipeline entrenado**
-
----
-
-## Resultado esperado
-
-Al finalizar la ejecución, se debe crear el archivo:
-
-```
-models/wine_quality_pipeline.joblib
-```
-
-## Next Steps
-
-En la siguiente rama (`feature/api`), se utilizará este archivo `.joblib` para cargar el pipeline y exponerlo a través de una API REST con `FastAPI`, permitiendo hacer predicciones desde herramientas como Postman.
+- Prueba con inputs válidos y espera un valor entero (predicción)
+- Prueba con un campo faltante o tipo incorrecto para ver el manejo de errores
