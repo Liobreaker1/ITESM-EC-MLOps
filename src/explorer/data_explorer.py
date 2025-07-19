@@ -1,6 +1,6 @@
+import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
 
 
 class DataExplorer:
@@ -31,6 +31,6 @@ class DataExplorer:
         Plot a heatmap showing the correlation between variables.
         """
         plt.figure(figsize=(12, 8))
-        sns.heatmap(data.corr(), annot=True, fmt=".2f", cmap='coolwarm')
+        sns.heatmap(data.corr(), annot=True, fmt=".2f", cmap="coolwarm")
         plt.title("Feature Correlation Heatmap")
         plt.show()

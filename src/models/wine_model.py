@@ -1,13 +1,19 @@
 from typing import Optional
-import pandas as pd
-import numpy as np
-import seaborn as sns
+
 import matplotlib.pyplot as plt
-from sklearn.pipeline import Pipeline
+import numpy as np
+import pandas as pd
+import seaborn as sns
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    ConfusionMatrixDisplay,
+    classification_report,
+    confusion_matrix,
+)
+from sklearn.model_selection import cross_val_score, train_test_split
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.metrics import confusion_matrix, classification_report, ConfusionMatrixDisplay
+
 from explorer.data_explorer import DataExplorer
 
 
@@ -23,12 +29,14 @@ class WineQualityModel:
         self.X_test: Optional[pd.DataFrame] = None
         self.y_train: Optional[pd.Series] = None
         self.y_test: Optional[pd.Series] = None
-        self.model_pipeline: Pipeline = Pipeline([
-            ('scaler', StandardScaler()),
-            ('classifier', LogisticRegression(max_iter=1000))
-        ])
+        self.model_pipeline: Pipeline = Pipeline(
+            [
+                ("scaler", StandardScaler()),
+                ("classifier", LogisticRegression(max_iter=1000)),
+            ]
+        )
 
-    def load_data(self) -> 'WineQualityModel':
+    def load_data(self) -> "WineQualityModel":
         try:
             self.data = pd.read_csv(self.filepath)
         except FileNotFoundError as e:
@@ -38,33 +46,35 @@ class WineQualityModel:
         if self.data is None or self.data.empty:
             raise ValueError("Loaded data is empty.")
 
-        if 'quality' not in self.data.columns:
+        if "quality" not in self.data.columns:
             raise ValueError("Column 'quality' not found in dataset.")
 
         DataExplorer.explore_data(self.data)
         return self
 
-    def preprocess_data(self) -> 'WineQualityModel':
-        X = self.data.drop('quality', axis=1)
-        y = self.data['quality']
+    def preprocess_data(self) -> "WineQualityModel":
+        X = self.data.drop("quality", axis=1)
+        y = self.data["quality"]
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
             X, y, test_size=0.2, random_state=42
         )
         return self
 
-    def train_model(self) -> 'WineQualityModel':
+    def train_model(self) -> "WineQualityModel":
         self.model_pipeline.fit(self.X_train, self.y_train)
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
         return self.model_pipeline.predict(X)
 
-    def evaluate_model(self) -> 'WineQualityModel':
+    def evaluate_model(self) -> "WineQualityModel":
         y_pred = self.predict(self.X_test)
 
         cm = confusion_matrix(self.y_test, y_pred)
-        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=np.unique(self.y_test))
-        disp.plot(cmap='Blues')
+        disp = ConfusionMatrixDisplay(
+            confusion_matrix=cm, display_labels=np.unique(self.y_test)
+        )
+        disp.plot(cmap="Blues")
         plt.title("Confusion Matrix")
         plt.show()
 
@@ -73,7 +83,7 @@ class WineQualityModel:
 
         return self
 
-    def cross_validate_model(self) -> 'WineQualityModel':
+    def cross_validate_model(self) -> "WineQualityModel":
         scores = cross_val_score(self.model_pipeline, self.X_train, self.y_train, cv=5)
         print("Cross-validation scores:", scores)
         print("Average Accuracy:", np.mean(scores))
@@ -88,5 +98,11 @@ class WineQualityModel:
 
         return self
 
-    def run_all(self) -> 'WineQualityModel':
-        return self.load_data().preprocess_data().train_model().evaluate_model().cross_validate_model()
+    def run_all(self) -> "WineQualityModel":
+        return (
+            self.load_data()
+            .preprocess_data()
+            .train_model()
+            .evaluate_model()
+            .cross_validate_model()
+        )
