@@ -52,11 +52,17 @@ class WineQualityModel:
         if "quality" not in self.data.columns:
             raise ValueError("Column 'quality' not found in dataset.")
 
+        self.data.columns = [col.strip().lower().replace(" ", "_") for col in self.data.columns]
+
         DataExplorer.explore_data(self.data)
         return self
 
     def preprocess_data(self) -> "WineQualityModel":
         X = self.data.drop("quality", axis=1)
+
+        if "id" in X.columns:
+            X = X.drop("id", axis=1)
+
         y = self.data["quality"]
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
             X, y, test_size=0.2, random_state=42
