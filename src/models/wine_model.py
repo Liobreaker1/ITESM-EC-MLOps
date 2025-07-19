@@ -16,6 +16,9 @@ from sklearn.preprocessing import StandardScaler
 
 from explorer.data_explorer import DataExplorer
 
+import joblib
+import os
+
 
 class WineQualityModel:
     """
@@ -106,3 +109,12 @@ class WineQualityModel:
             .evaluate_model()
             .cross_validate_model()
         )
+
+    def save_pipeline(self, path: str = "models/wine_quality_pipeline.joblib") -> None:
+        """
+        Saves the trained pipeline to a file.
+        """
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        joblib.dump(self.model_pipeline, path)
+        print(f"Pipeline saved to {path}")
+
