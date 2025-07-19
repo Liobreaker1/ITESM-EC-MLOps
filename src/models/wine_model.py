@@ -49,6 +49,8 @@ class WineQualityModel:
         if "quality" not in self.data.columns:
             raise ValueError("Column 'quality' not found in dataset.")
 
+        self.data.columns = [col.strip().lower().replace(" ", "_") for col in self.data.columns]
+        
         DataExplorer.explore_data(self.data)
         return self
 
