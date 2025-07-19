@@ -8,3 +8,4 @@ mlops_ec/
 __pycache__/
 *.py[cod]
 .mypy_cache/
+*.pyc
