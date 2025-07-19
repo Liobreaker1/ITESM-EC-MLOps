@@ -1,76 +1,52 @@
 # ITESM-MLOps-EC
 
-# Wine Quality Prediction (Code Style & Linting)
+# Wine Quality Prediction (Testing Suite).
 
-Esta rama agrega herramientas de formato automático, ordenamiento de imports y análisis estático para mantener un código limpio, legible y mantenible.
+Esta rama introduce pruebas automatizadas para validar el comportamiento del pipeline de Machine Learning, utilizando `pytest` y un enfoque modular.
 
 ## Cambios principales respecto a la rama anterior
 
-- Se agregaron configuraciones para:
-  - `black`: formateo automático de código Python
-  - `isort`: ordenamiento automático de imports
-  - `flake8`: detección de errores de estilo y código redundante
-  - `mypy`: análisis estático de tipos
-- Se incluyó un archivo `pyproject.toml` con configuraciones compartidas
-- Se documentó cómo ejecutar cada herramienta y corregir errores
+- Se agregó la carpeta `tests/` con pruebas unitarias para:
+  - `WineQualityModel`
+  - `DataExplorer`
+- Se incluyó un archivo de configuración `pytest.ini`
+- Se añadió una prueba intencionalmente fallida para propósitos didácticos
 
-## Herramientas utilizadas
-
-| Herramienta | Propósito                              |
-|-------------|----------------------------------------|
-| black       | Formato de código consistente          |
-| isort       | Orden automático de imports            |
-| flake8      | Revisión de estilo y convenciones PEP8 |
-| mypy        | Validación de anotaciones de tipo      |
-
-## Estructura nueva
+## Estructura de pruebas
 
 ```bash
-├── pyproject.toml # Configuración de black, isort
-├── .flake8 # Opcional: configuración flake8
-├── src/...
-├── scripts/...
+tests/
+├── test_wine_model.py
+├── test_data_explorer.py
+├── test_fail_example.py
+pytest.ini
 ```
 
-## Ejecución de las herramientas
+## Ejecución de la suite de pruebas
 
-Asegurate de tener instaladas las librerías ya mencionadas
+Asegurarse de tener instalado pytest, sino es así, ejecutar el siguiente comando en la terminal, con el entorno virtual actuvado:
 
 ```bash
-pip install black isort flake8 mypy
+pip install pytest
 ```
 
-Después, desde la raíz del proyecto, ejecuta:
-
-### Formato con `black`
+Después en la terminal:
 
 ```bash
-black src/ scripts/
+PYTHONPATH=src pytest -v
 ```
 
-### Orden de imports con `isort`
+Si deseamos ejecutar un archivo específico:
 
 ```bash
-isort src/ scripts/
+PYTHONPATH=src pytest tests/test_wine_model.py
 ```
-
-### Revisión de estilo con `flake8`
-
-```bash
-flake8 src/ scripts/
-```
-
-### Revisión de tipado con `mypy`
-
-```bash
-mypy src/
-```
-
-## Recomendaciones
-
-- Usa `black` antes de cada commit.
-- Corre `flake8` y `mypy` para detectar errores antes del push.
 
 ## Next Steps.
 
-La siguiente rama (`feature/testing-suite`) introducirá pruebas unitarias con `pytest`, cubriendo las clases `WineQualityModel` y `DataExplorer`.
+La siguiente rama (`feature/sklearn-pipeline`) convierte el flujo de entrenamiento a un `Pipeline` real de scikit-learn que es mejor práctica al ser reutilizabe y serilizable.
+
+Esto trae los siguientes beneficios:
+- Persistencia del flujo (joblib, pickle, mlflow, etc.)
+- Integración más ordenada con APIs, pruebas y despliegue.
+- Mejor modularidad del preprocesamiento y el modelo
