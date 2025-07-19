@@ -3,3 +3,5 @@
 
 # Ignore virtual env
 mlops_ec/
+*.pyc
+.mypy_cache/
