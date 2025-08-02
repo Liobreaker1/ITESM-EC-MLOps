@@ -11,9 +11,19 @@ Este proyecto tiene como objetivo predecir la calidad del vino utilizando técni
 ├── data/
 │   └── raw/
 │       └── wine_quality_df.csv
+├── docs/
+├── models/
 ├── notebooks/
-│   └── Wine_EDA.ipynb
-├── README.md
+├── src/
+│   ├── prediction/
+│   ├── utils/
+│   └── main.py
+├── tests/
+├── docker-compose.yml
+├── Dockerfile
+├── poetry.lock
+├── pyproject.toml
+└── README.md
 ```
 
 ## Dataset

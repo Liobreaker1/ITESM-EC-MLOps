@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  query:
+    build:
+      context: .
+      target: devel
+    command: sh -c "poetry run uvicorn src.main:app --reload --host=0.0.0.0 --port=8000"
+    ports:
+      - 8000:8000
+    volumes:
+      - ./data:/app/data
+      - ./notebooks:/app/notebooks
+      - ./src:/app/src
+
+  predict:
+    build:
+      context: .
+      target: testing
+    command: sh -c "poetry run uvicorn src.main:app --reload --host=0.0.0.0 --port=8001"
+    ports:
+      - 8001:8001
+  #   env_file:
+  #     - .env
+
+  # index:
+  #   build:
+  #     context: .
+  #     target: devel_2
+  #   command: sh -c "poetry run uvicorn src.main_2:app --reload --host=0.0.0.0 --port=8001"
+  #   ports:
+  #     - 8001:8001
+  #   volumes:
+  #     - ./data:/app/data
+  #     - ./src:/app/src
+  #   env_file:
+  #     - .env
+
+  # clips:
+  #   build:
+  #     context: .
+  #     target: devel_3
+  #   command: sh -c "poetry run uvicorn src.main_3:app --reload --host=0.0.0.0 --port=8002"
+  #   ports:
+  #     - 8002:8002
+  #   volumes:
+  #     - ./data:/app/data
+  #   env_file:
+  #     - .env
+
+
