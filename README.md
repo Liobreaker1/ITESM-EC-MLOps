@@ -42,27 +42,18 @@ El dataset es público y se puede dercargar directamente de [Kaggle](https://www
 ## Instalación rápida:
 
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn 
-```
-
-### Notas:
-
-También se puede instalar el archivo requirements con el siguiente comando:
-
-```bash
-pip install -r requirements.txt
+poetry install
 ```
 
 solo hay que considerar que también tiene dependencias de otras cosas vistas durante el curso.
 
-## Notebook
+## Docker compose
 
-Para visualizar el notebook, desde Jupyterlab o Notebook, solo hay que cargar el archivo:
 
+Para ejecutar el proyecto con Docker, asegúrate de tener Docker y Docker Compose instalados. Luego, sigue estos pasos:
+
+```bash
+docker compose up
 ```
-notebooks/Demo/Wine_EDA.ipynb
-```
 
-## Next Steps
 
-La siguiente rama (`feature/notebook-poo-refactor`) contiene una versión refactorizada con programación orientada a objetos (POO).
